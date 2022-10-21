@@ -327,10 +327,10 @@ void Vector2D<T>::Set(T x, T y)
 }
 
 template <class T>
-std::string Vector2D<T>::ToString(int precision) const
+std::string Vector2D<T>::ToString(const int precision) const
 {
 	std::stringstream out;
-
+	
 	out << std::fixed << std::setprecision(precision);
 	out << "(" << m_x << ", " << m_y << ")";
 	return out.str();

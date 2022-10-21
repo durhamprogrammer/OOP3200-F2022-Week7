@@ -1,6 +1,7 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
+#include <map>
 #include <vector>
 
 
@@ -11,6 +12,8 @@ void Vector2DWrite(Vector2D<T> point)
 {
 	std::ofstream Vector2DOutstream("Vectors.dat", std::ios::out);
 	Vector2DOutstream << point.ToString() << std::endl;
+
+	Vector2DOutstream.close();
 }
 
 template<typename T>
@@ -19,6 +22,9 @@ Vector2D<T> Vector2DRead()
 	std::ifstream Vector2DInStream("Vectors.dat", std::ios::in);
 	Vector2D<float> temp_point = Vector2D<T>::Zero();
 	Vector2DInStream >> temp_point;
+
+	Vector2DInStream.close();
+
 	return temp_point;
 }
 
@@ -35,6 +41,8 @@ std::vector<Vector2D<T>*> Vector2DArrayRead(const std::string& file_name)
 		points.push_back(new Vector2D<T>(temp_point->GetX(), temp_point->GetY()));
 	}
 
+	Vector2DInStream.close();
+
 	return points;
 }
 
@@ -50,9 +58,27 @@ void PrintVector2DArray(std::vector<Vector2D<T>*> points)
 
 int main()
 {
-
+	// Case 1: Read an Array of Vector2D "float" types and store it in std::vector
 	const auto points = Vector2DArrayRead<float>("Vectors.dat");
 	PrintVector2DArray(points);
+
+	std::map<std::string, Vector2D<float>*> vectorAtlas;
+	vectorAtlas["AA"] = new Vector2D<float>(); // stores a Vector2D with a (0.0f, 0.0f) value
+	vectorAtlas["AB"] = new Vector2D<float>(12.0f, 24.0f);
+
+
+	try
+	{
+		for (const auto element : vectorAtlas)
+		{
+			std::cout << element.second->ToString() << std::endl;
+		}
+	}
+	catch(std::exception exception)
+	{
+		std::cout << exception.what() << std::endl;
+	}
+	
 
 	try
 	{
