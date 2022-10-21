@@ -1,6 +1,7 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 
 #include "Vector2D.h"
@@ -21,20 +22,37 @@ Vector2D<T> Vector2DRead()
 	return temp_point;
 }
 
+template<typename T>
+std::vector<Vector2D<T>*> Vector2DArrayRead(const std::string& file_name)
+{
+	std::ifstream Vector2DInStream(file_name, std::ios::in);
+
+	std::vector<Vector2D<T>*> points;
+
+	auto* temp_point = new Vector2D<T>();
+	while(Vector2DInStream >> *temp_point)
+	{
+		points.push_back(new Vector2D<T>(temp_point->GetX(), temp_point->GetY()));
+	}
+
+	return points;
+}
+
+template<typename T>
+void PrintVector2DArray(std::vector<Vector2D<T>*> points)
+{
+	for (auto point : points)
+	{
+		std::cout << point->ToString() << std::endl;
+	}
+}
+
 
 int main()
 {
 
-	auto PointA = new Vector2D<float>(10.0f, 20.0f);
-
-	auto PointB = new Vector2D<float>(30.0f, 50.0f);
-
-	/*std::cout << Vector2D<float>::Distance(*PointA, *PointB) << std::endl;*/
-
-	Vector2DWrite<float>(*PointA);
-
-	const auto PointC = Vector2DRead<float>();
-	std::cout << PointC.ToString() << std::endl;
+	const auto points = Vector2DArrayRead<float>("Vectors.dat");
+	PrintVector2DArray(points);
 
 	try
 	{

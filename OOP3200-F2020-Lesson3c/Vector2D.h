@@ -65,7 +65,7 @@ public:
 		in >> rhs.m_x;
 		in.ignore();
 		in >> rhs.m_y;
-		in.ignore();
+		in.ignore(2);
 
 		return in;
 	}
